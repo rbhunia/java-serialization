@@ -2,24 +2,21 @@ package org.example;
 
 import lombok.*;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 
 public class CustomSerializationDemo {
+
+    private static final String FILE_NAME = "Person.ser";
+
     public static void main(String[] args) {
         Person person = Person.builder().name("Raj").address(new Address("WB", "MDN", "721102")).build();
-        try(ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream("custom.ser"))){
-            objectOutputStream.writeObject(person);
-            objectOutputStream.flush();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
-        try(ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream("custom.ser"))){
-            Person deserializedPerson = (Person) objectInputStream.readObject();
-            System.out.println(deserializedPerson);
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
-        }
+        SerializationUtil.writeObject(person);
+        Person deserializedPerson = SerializationUtil.readObject(FILE_NAME);
+        System.out.println(deserializedPerson);
     }
 
 }
@@ -47,10 +44,8 @@ class Person implements Serializable {
             String state = (String) objectInputStream.readObject();
             String city = (String) objectInputStream.readObject();
             String zipCode = (String) objectInputStream.readObject();
-            address = new Address(state,city,zipCode);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
+            address = new Address(state, city, zipCode);
+        } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
     }
