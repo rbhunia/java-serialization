@@ -14,8 +14,8 @@ public class CustomSerializationDemo {
     public static void main(String[] args) {
         Person person = Person.builder().name("Raj").address(new Address("WB", "MDN", "721102")).build();
 
-        SerializationUtil.writeObject(person);
-        Person deserializedPerson = SerializationUtil.readObject(FILE_NAME);
+        SerializationUtil.serialize(person);
+        Person deserializedPerson = SerializationUtil.deserialize(FILE_NAME);
         System.out.println(deserializedPerson);
     }
 
