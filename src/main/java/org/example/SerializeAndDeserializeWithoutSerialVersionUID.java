@@ -1,16 +1,16 @@
 package org.example;
 
-import java.io.*;
+import java.io.IOException;
 
 public class SerializeAndDeserializeWithoutSerialVersionUID {
 
-    public static void main(String[] args) throws IOException, ClassNotFoundException {
-//        ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream("emp.ser"));
-//        objectOutputStream.writeObject(Employee.builder().name("Raj").age(32).build());
-//        objectOutputStream.close();
+    private static final String FILE_NAME = "emp.ser";
 
-        ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream("emp.ser"));
-        Employee employee = (Employee) objectInputStream.readObject();
+    public static void main(String[] args) throws IOException, ClassNotFoundException {
+
+        //SerializationUtil.serialize(Employee.builder().name("Raj").age(32).build());
+
+        Employee employee = SerializationUtil.deserialize(FILE_NAME);
         System.out.println(employee);
     }
 
