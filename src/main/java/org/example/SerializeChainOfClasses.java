@@ -2,9 +2,12 @@ package org.example;
 
 import lombok.Data;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.Serializable;
 
 public class SerializeChainOfClasses {
+
+    private static final String FILE_NAME = "Reference1.ser";
 
     public static void main(String[] args) throws IOException, ClassNotFoundException {
         Reference3 reference3 = new Reference3();
@@ -18,14 +21,9 @@ public class SerializeChainOfClasses {
         reference1.setData(3);
         reference1.setReference2(reference2);
 
-        ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream("custom.ser"));
-        objectOutputStream.writeObject(reference1);
-        objectOutputStream.flush();
-        objectOutputStream.close();
+        SerializationUtil.serialize(reference1);
 
-        ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream("custom.ser"));
-        Reference1 readObject = (Reference1) objectInputStream.readObject();
-        objectInputStream.close();
+        Reference1 readObject = SerializationUtil.deserialize(FILE_NAME);
 
         System.out.println(readObject.getReference2().getReference3().getData());
     }
